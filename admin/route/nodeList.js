@@ -67,16 +67,17 @@ route.post('/addNode', function (req, res) {
         data = req.nodeList.data;
     newData = {
         ...newData,
-        id:Number(newData['id']),
-        recommend:false,
-        likes:[],
-        collect:[],
-        nodeId:++req.nodeList.num
+        id: Number(newData['id']),
+        recommend: false,
+        likes: [],
+        collect: [],
+        nodeId: ++req.nodeList.num
     };
     data.push(newData);
     utils.writeFile('nodeList.json', req.nodeList);
     res.send('success');
 });
+
 // get collect bode
 route.post('/collect', function (req, res) {
     let id = req.body.id,
@@ -90,6 +91,15 @@ route.post('/collect', function (req, res) {
     });
     dataResult = dataResult.slice((page - 1) * 6, page * 6);
     res.send(getUserInfo(dataResult, req));
+});
+//get nodeList detail
+route.get('/info', function (req, res) {
+    let {nodeId} = req.query;
+    let dataResult = req.nodeList['data'].find(item => item['nodeId'] === Number(nodeId)) || {};
+    let curUser = req.userList['data'].find(temp => temp['id'] === Number(dataResult['id']));
+    dataResult['userName'] = curUser['userName'];
+    dataResult['userImg'] = curUser['userImg'];
+    res.send(dataResult);
 });
 //get hot key
 route.get('/searchKey', function (req, res) {
