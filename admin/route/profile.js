@@ -19,8 +19,7 @@ route.post('/login', function (req, res) {
     if (!curUser) {
         res.send('用户名密码错误');
         return;
-    }
-    req.session.loginId = curUser['id'];
+    }  
     res.send('success');
 });
 route.get('/login', function (req, res) {
@@ -37,6 +36,7 @@ route.post('/register', function (req, res) {
         pass = req.body.pass;
     let code = Math.round(Math.random() * 9999 + 1111);
     let result = {};
+    req.session.loginId = ++req.userList.num;
     let obj = {
         id: ++req.userList.num,
         pass: pass,
