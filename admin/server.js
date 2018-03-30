@@ -1,4 +1,5 @@
 let express = require('express'),
+    session = require('express-session'),
     app = express();
 
 app.listen(1234, () => {
@@ -6,6 +7,14 @@ app.listen(1234, () => {
 });
 
 /* API */
+app.use(session({
+    secret: 'zfpx',//=>用来对SESSION-ID相关的COOKIE进行签名
+    saveUninitialized: false, //=>是否自动保存未初始化的会话，建议FALSE
+    resave: false, //=>是否每次都重新保存会话，建议FALSE
+    cookie: {
+        maxAge: 1000 * 60 * 60 * 24 * 30 //=>有效期，单位是毫秒
+    }
+}));
 //CORS
 app.use(function (req, res, next) {
     
@@ -19,6 +28,7 @@ app.use(function (req, res, next) {
     }*/
     next();
 });
+
 //body-parser middleware
 
 let bodyParser = require('body-parser');

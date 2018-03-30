@@ -20,14 +20,15 @@ route.post('/login', function (req, res) {
         res.send('用户名密码错误');
         return;
     }
-    res.send(JSON.stringify(curUser['id']));
+    req.session.loginId = curUser['id'];
+    res.send('success');
 });
 route.get('/login', function (req, res) {
     res.send(req.session.loginId + '' || '0');
 });
 route.get('/info', function (req, res) {
     let userId = req.query.id || req.session.loginId || 0,
-        data = req.userList['data'].find(item => item.id === Number(userId));
+        data = req.userList['data'].find(item => item.id === userId);
     res.send(data || 'error');
 });
 
@@ -36,7 +37,6 @@ route.post('/register', function (req, res) {
         pass = req.body.pass;
     let code = Math.round(Math.random() * 9999 + 1111);
     let result = {};
-    req.session.loginId = ++req.userList.num;
     let obj = {
         id: ++req.userList.num,
         pass: pass,
@@ -75,14 +75,6 @@ route.post('/follow', function (req, res) {
     utils.writeFile('userList.json', req.userList);
     res.send('success');
 });
-//isFollow
-route.post('/isFollow', function (req, res) {
-    let id = Number(req.body.id),
-        fId = Number(req.body.fId);
-    let curUser = req.userList['data'].find(item => item['id'] === id)['follow'];
-    let isExit = curUser.find(item => item === fId);
-    isExit ? res.send('true') : res.send('false');
-});
 //edit profile
 route.post('/edit', function (req, res) {
     let newUser = req.body,
@@ -96,7 +88,7 @@ route.post('/edit', function (req, res) {
         sex: newUser['sex'],
         bio: newUser['bio']
     };
-    req.userList['data'].splice(id - 1, 1, curUser);
+    req.userList['data'].splice(id - 1,1,curUser);
     utils.writeFile('userList.json', req.userList);
     res.send('success');
 });

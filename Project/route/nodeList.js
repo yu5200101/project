@@ -28,10 +28,10 @@ route.use(async function (req, res, next) {
 });
 
 function getUserInfo(data, req) {
-    data.forEach((item) => {
+    data.forEach((item, index) => {
         let curUser = req.userList['data'].find(temp => temp['id'] === Number(item['id']));
-        item['userName'] = curUser['userName'];
-        item['userImg'] = curUser['userImg'];
+        data[index]['userName'] = curUser['userName'];
+        data[index]['userImg'] = curUser['userImg'];
     });
     return data;
 }
@@ -49,14 +49,7 @@ route.post('/recommend', function (req, res) {
         rec = Boolean(req.body.recommend),
         data = req.nodeList.data;
     let dataResult = data.filter((item) => item.recommend === rec);
-    dataResult.forEach((item)=>{
-        req.commentList.forEach((temp)=>{
-            if(item['nodeId']===temp['nodeId']){
-                item['comment'] = temp['textList'];
-            }
-        });
-    });
-    dataResult = dataResult.slice(0, page * 2);
+    dataResult = dataResult.slice((page - 1) * 6, page * 6);
     res.send(getUserInfo(dataResult, req));
 });
 //class
@@ -65,7 +58,7 @@ route.post('/class', function (req, res) {
         page = req.body.page || 1,
         data = req.nodeList.data;
     let dataResult = data.filter(item => item.type === type);
-    dataResult = dataResult.slice((page - 1) * 4, page * 4);
+    dataResult = dataResult.slice((page - 1) * 6, page * 6);
     res.send(getUserInfo(dataResult, req));
 });
 // add node
@@ -74,17 +67,16 @@ route.post('/addNode', function (req, res) {
         data = req.nodeList.data;
     newData = {
         ...newData,
-        id: Number(newData['id']),
-        recommend: false,
-        likes: [],
-        collect: [],
-        nodeId: ++req.nodeList.num
+        id:Number(newData['id']),
+        recommend:false,
+        likes:[],
+        collect:[],
+        nodeId:++req.nodeList.num
     };
     data.push(newData);
     utils.writeFile('nodeList.json', req.nodeList);
     res.send('success');
 });
-
 // get collect bode
 route.post('/collect', function (req, res) {
     let id = req.body.id,
@@ -96,26 +88,8 @@ route.post('/collect', function (req, res) {
         let newNode = data.find(item => item['nodeId'] === val);
         dataResult.push(newNode);
     });
-    dataResult = dataResult.slice(0, page * 4);
+    dataResult = dataResult.slice((page - 1) * 6, page * 6);
     res.send(getUserInfo(dataResult, req));
-});
-//personal node
-route.post('/personalNode', function (req, res) {
-    let id = req.body.id,
-        page = req.body.page || 1,
-        data = req.nodeList.data;
-    let dataResult = data.filter(item => item['id'] === Number(id));
-    dataResult = dataResult.slice(0, page * 4);
-    res.send(getUserInfo(dataResult, req));
-});
-//get nodeList detail
-route.get('/info', function (req, res) {
-    let {nodeId} = req.query;
-    let dataResult = req.nodeList['data'].find(item => item['nodeId'] === Number(nodeId)) || {};
-    let curUser = req.userList['data'].find(temp => temp['id'] === Number(dataResult['id']));
-    dataResult['userName'] = curUser['userName'];
-    dataResult['userImg'] = curUser['userImg'];
-    res.send(dataResult);
 });
 //get hot key
 route.get('/searchKey', function (req, res) {
@@ -131,7 +105,7 @@ route.post('/comment', function (req, res) {
         page = req.body.page || 1,
         commentData = req.commentList;
     let newComment = commentData.find(item => item['nodeId'] === Number(nodeId))['textList'];
-    newComment = newComment.slice(0, page * 4);
+    newComment = newComment.slice((page - 1) * 4, page * 4);
     res.send(getUserInfo(newComment, req));
 });
 //add comment
@@ -177,7 +151,8 @@ route.post('/search', function (req, res) {
     let key = req.body.key,
         page = req.body.page || 1;
     let dataResult = req.nodeList['data'].filter(item => item['title'].indexOf(key.toString()) !== -1);
-    dataResult = dataResult.slice(0, page * 4);
+    console.log(dataResult);
+    dataResult = dataResult.slice((page - 1) * 6, page * 6);
     res.send(getUserInfo(dataResult, req));
 });
 
