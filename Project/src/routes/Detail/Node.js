@@ -5,6 +5,7 @@ import {withRouter} from 'react-router-dom';
 import action from "../../store/action/index";
 import utils from '../../common/js/utils';
 import {addLike, addCollect, addComment, addFollow} from '../../api/nodeList';
+import '../../common/css/style.css'
 
 class Node extends React.Component {
 
@@ -12,6 +13,8 @@ class Node extends React.Component {
         nodeData: PropTypes.object.isRequired,
         commentData: PropTypes.array.isRequired,
         isFollow: PropTypes.bool.isRequired,
+        isCollect: PropTypes.bool.isRequired,
+        isLike: PropTypes.bool.isRequired,
         userInfo: PropTypes.object.isRequired
 
     };
@@ -28,6 +31,16 @@ class Node extends React.Component {
                 fId: 0
             },
             Id: JSON.parse(localStorage.getItem('userId'))[0],
+            comment: '',
+            commentParam: {
+                id: 0,
+                nodeId: 0,
+                text: '',
+                time: '',
+            },
+            isFollow:false,
+            isLike:false,
+            isCollect:false
         }
     }
 
@@ -49,9 +62,11 @@ class Node extends React.Component {
             },
             commentData,
             isFollow,
+            isLike,
+            isCollect,
             userInfo
         } = this.props;
-        let {Id} = this.state;
+        let {Id, comment} = this.state;
         return <div className="det">
             <div className="header">
                 <img onClick={ev => {
@@ -91,7 +106,8 @@ class Node extends React.Component {
                 </div>
                 <div className="addComment">
                     <img src={userInfo['userImg']} alt=""/>
-                    <input type="text" placeholder="想勾搭，先评论"/>
+                    <input type="text" placeholder="想勾搭，先评论" onChange={this.handInp} value={comment}/>
+                    <button onClick={this.handComment} data-nodeid={nodeId}>发送</button>
                 </div>
                 {
                     commentData.map((item, index) => (
@@ -120,25 +136,40 @@ class Node extends React.Component {
             </div>
 
             <ul className="footer">
-                <li onClick={this.likeClick} data-nodeid={nodeId}>
-                    <img src={require("../../common/images/zan.png")} alt=""/>
+                {!isLike ? <li onClick={this.likeClick} data-nodeid={nodeId}>
+                    <i className="icon-heart"></i>
                     <span>赞</span>
                     <span>{likes.length}</span>
-                </li>
+                </li> : <li data-nodeid={nodeId}>
+                    <i className="icon-heart active"></i>
+                    <span>赞</span>
+                    <span>{likes.length}</span>
+                </li>}
+
                 <li>
-                    <img src={require("../../common/images/pinglun.png")} alt=""/>
+                    <i className="icon-chat-bubble-dots"></i>
                     <span>评论</span>
                     <span>{commentData.length}</span>
                 </li>
-                <li onClick={this.collectClick} data-nodeid={nodeId}>
-                    <img src={require("../../common/images/xingxing.png")} alt=""/>
+                {!isCollect ? <li onClick={this.collectClick} data-nodeid={nodeId}>
+                    <i className="icon-star-full"></i>
                     <span>收藏</span>
                     <span>{collect.length}</span>
-                </li>
+                </li> : <li data-nodeid={nodeId}>
+                    <i className="icon-star-full active"></i>
+                    <span>收藏</span>
+                    <span>{collect.length}</span>
+                </li>}
+
             </ul>
         </div>
     }
 
+    handInp = (ev) => {
+        this.setState({
+            comment: ev.target.value
+        });
+    };
     follow = (ev) => {
         let {Id} = this.state;
         let data = {
@@ -150,6 +181,9 @@ class Node extends React.Component {
         }, async function () {
             let result = await addFollow(this.state.follow);
             console.log(result);
+        });
+        this.setState({
+            isFollow:true
         });
     };
     likeClick = (ev) => {
@@ -164,6 +198,9 @@ class Node extends React.Component {
             let result = await addLike(this.state.idParam);
             console.log(result);
         });
+        this.setState({
+            isLike:true
+        });
     };
     collectClick = (ev) => {
         let {Id} = this.state;
@@ -176,6 +213,27 @@ class Node extends React.Component {
         }, async function () {
             let result = await addCollect(this.state.idParam);
             console.log(result);
+        });
+        this.setState({
+            isCollect:true
+        });
+    };
+    handComment = (ev) => {
+        let {comment, Id} = this.state;
+        let nodeId = ev.target.dataset.nodeid;
+        let data = {
+            id: Id,
+            nodeId,
+            text: comment,
+            time: utils.formatTime(new Date(), '{0}-{1}-{2}'),
+        };
+        this.setState({
+            commentParam: data
+        }, function () {
+            addComment(this.state.commentParam);
+            setTimeout(() => {
+                this.props.history.push(`/comment/${nodeId}`)
+            }, 500);
         });
     }
 }

@@ -18,6 +18,7 @@ class Comments extends React.Component {
 
     render() {
         let{commentData} = this.props;
+
         return (
             <div className="allComment">
                 <header>
@@ -28,6 +29,7 @@ class Comments extends React.Component {
                 </header>
                 <div className="commentContent">
                     {
+                        commentData && commentData.length>0 ?
                         commentData.map((item,index)=>(
                             <div className="content" key={index}>
                                 <div className="photo">
@@ -48,7 +50,7 @@ class Comments extends React.Component {
                                     </div>
                                 </div>
                             </div>
-                        ))
+                        )):''
                     }
                 </div>
             </div>

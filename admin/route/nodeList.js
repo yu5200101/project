@@ -93,13 +93,13 @@ route.post('/collectAndNode', function (req, res) {
         data = req.nodeList.data;
     let dataResult = [];
     if(type === 'collect'){
-        let curCollect = req.collectList.find(item => item['id'] === Number(id));
-        curCollect['collectList'].forEach((val) => {
+        let curCollect = req.collectList.find(item => item['id'] === Number(id))['collectList'] || [];
+        curCollect.forEach((val) => {
             let newNode = data.find(item => item['nodeId'] === val);
             dataResult.push(newNode);
         });
     }else if(type === 'node'){
-         dataResult = data.filter(item => item['id'] === Number(id));
+         dataResult = data.filter(item => item['id'] === Number(id))||[];
     }
     dataResult = dataResult.slice(0, page * 4);
     res.send(getUserInfo(dataResult, req));
@@ -128,6 +128,9 @@ route.post('/comment', function (req, res) {
         page = req.body.page || 1,
         commentData = req.commentList;
     let newComment = commentData.find(item => item['nodeId'] === Number(nodeId))['textList'];
+    newComment.sort(function (a,b) {
+        return new Date(b.time)-new Date(a.time);
+    });
     newComment = newComment.slice(0, page * 4);
     res.send(getUserInfo(newComment, req));
 });
@@ -160,6 +163,14 @@ route.post('/addCollect', function (req, res) {
     utils.writeFile('nodeList.json', req.nodeList);
     res.send('success');
 });
+// iscollect
+route.post('/isCollect', function (req, res) {
+    let id = Number(req.body.id),
+        nodeId = Number(req.body.nodeId);
+    let curCollect = req.collectList.find(item => item['id'] === id)['collectList'];
+    let isExit = curCollect.find(item => item === nodeId);
+    isExit ? res.send('true') : res.send('false');
+});
 //like
 route.post('/like', function (req, res) {
     let id = Number(req.body.id),
@@ -168,6 +179,14 @@ route.post('/like', function (req, res) {
     isExit(curNode, id);
     utils.writeFile('nodeList.json', req.nodeList);
     res.send('success');
+});
+//isLike
+route.post('/isLike', function (req, res) {
+    let id = Number(req.body.id),
+        nodeId = Number(req.body.nodeId);
+    let curNode = req.nodeList['data'].find(item => item['nodeId'] === nodeId)['likes'];
+    let isExit = curNode.find(item => item === id);
+    isExit ? res.send('true') : res.send('false');
 });
 //key search
 route.post('/search', function (req, res) {

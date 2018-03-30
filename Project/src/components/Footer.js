@@ -1,6 +1,7 @@
 import React from 'react';
 import {withRouter,NavLink} from 'react-router-dom';
-import './Footer.less'
+import './Footer.less';
+import '../common/css/style.css';
 
 export default class Footer extends React.Component {
     constructor(props) {
@@ -10,42 +11,42 @@ export default class Footer extends React.Component {
 
     render() {
         return <footer className="footerBox">
-            <ul>
-                <li>
-                    <NavLink exact to="/home">
-                            <img src={require('../common/images/shouye.png')} alt=""/>
-                        首页
-                    </NavLink>
-                </li>
+                <ul>
+                    <li>
+                        <NavLink exact to="/home">
+                            <i className="icon-home3"></i>
+                            首页
+                        </NavLink>
+                    </li>
 
-                <li>
-                    <NavLink to="/classify">
-                            <img src={require('../common/images/shangcheng.png')} alt=""/>
-                        分类
-                    </NavLink>
-                </li>
+                    <li>
+                        <NavLink to="/classify">
+                            <i className="icon-menu"></i>
+                            分类
+                        </NavLink>
+                    </li>
 
-                <li>
-                    <NavLink to="/add">
-                        <img src={require('../common/images/add.png')} alt=""/>
-                        添加
-                    </NavLink>
-                </li>
+                    <li>
+                        <NavLink to="/add">
+                            <i className="icon-plus"></i>
+                            添加
+                        </NavLink>
+                    </li>
 
-                <li>
-                    <NavLink to="/message">
-                            <img src={require('../common/images/xiaoxi2.png')} alt=""/>
-                      消息
-                    </NavLink>
-                </li>
+                    <li>
+                        <NavLink to="/message">
+                            <i className="icon-bubbles"></i>
+                            消息
+                        </NavLink>
+                    </li>
 
-                <li>
-                    <NavLink to="/profile">
-                            <img src={require('../common/images/mine.png')} alt=""/>
-                        我
-                    </NavLink>
-                </li>
-            </ul>
-        </footer>
+                    <li>
+                        <NavLink to="/profile">
+                            <i className="icon-user"></i>
+                            我
+                        </NavLink>
+                    </li>
+                </ul>
+            </footer>
     }
 }

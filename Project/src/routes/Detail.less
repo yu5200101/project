@@ -159,6 +159,7 @@ html{
       border-bottom: .01rem solid gainsboro;
     }
     .addComment{
+      position: relative;
       margin-top: .2rem;
       &:after{
         display: block;
@@ -174,15 +175,28 @@ html{
         margin-left: .2rem;
       }
       input{
-        width: 4.8rem;
-        height: 1rem;
-        left: 0.1rem;
+        width: 3.6rem;
+        height: .8rem;
+        left: 0.27rem;
         position: relative;
         border: none;
         outline: initial;
         background-color: gainsboro;
         border-radius: .05rem;
         padding-left: .1rem;
+      }
+      button{
+        position: absolute;
+        top: .15rem;
+        right: 0.3rem;
+        width: 1rem;
+        height: .5rem;
+        line-height: .5rem;
+        border: .01rem solid red;
+        border-radius: .1rem;
+        outline: initial;
+        background-color: #fff;
+        color: red;
       }
     }
     .content{
@@ -298,21 +312,20 @@ html{
     li{
       float: left;
       width: 33%;
-      img{
-        display: block;
-        width: .3rem;
-        height: .3rem;
-        margin-top: .36rem;
+      font-size: .35rem;
+      .active{
+        color: #5bc0de;
       }
+
       span{
         font-size: .2rem;
         position: absolute;
         &:nth-of-type(1){
-          left: 0.9rem;
+          left: 1.0rem;
           top: -.01rem;
         }
         &:nth-of-type(2){
-          left: 1.2rem;
+          left: 1.3rem;
           top: -.01rem;
         }
       }
@@ -321,11 +334,11 @@ html{
           font-size: .2rem;
           position: absolute;
           &:nth-of-type(1){
-            left: 3rem;
+            left: 3.1rem;
             top: -.01rem;
           }
           &:nth-of-type(2){
-            left: 3.5rem;
+            left: 3.6rem;
             top: -.01rem;
           }
         }
@@ -335,11 +348,11 @@ html{
           font-size: .2rem;
           position: absolute;
           &:nth-of-type(1){
-            left: 5.1rem;
+            left: 5.2rem;
             top: -.01rem;
           }
           &:nth-of-type(2){
-            left: 5.6rem;
+            left: 5.7rem;
             top: -.01rem;
           }
         }
