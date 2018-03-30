@@ -86,28 +86,25 @@ route.post('/addNode', function (req, res) {
 });
 
 // get collect bode
-route.post('/collect', function (req, res) {
+route.post('/collectAndNode', function (req, res) {
     let id = req.body.id,
         page = req.body.page || 1,
+        type = req.body.type,
         data = req.nodeList.data;
-    let curCollect = req.collectList.find(item => item['id'] === Number(id));
     let dataResult = [];
-    curCollect['collectList'].forEach((val) => {
-        let newNode = data.find(item => item['nodeId'] === val);
-        dataResult.push(newNode);
-    });
+    if(type === 'collect'){
+        let curCollect = req.collectList.find(item => item['id'] === Number(id));
+        curCollect['collectList'].forEach((val) => {
+            let newNode = data.find(item => item['nodeId'] === val);
+            dataResult.push(newNode);
+        });
+    }else if(type === 'node'){
+         dataResult = data.filter(item => item['id'] === Number(id));
+    }
     dataResult = dataResult.slice(0, page * 4);
     res.send(getUserInfo(dataResult, req));
 });
-//personal node
-route.post('/personalNode', function (req, res) {
-    let id = req.body.id,
-        page = req.body.page || 1,
-        data = req.nodeList.data;
-    let dataResult = data.filter(item => item['id'] === Number(id));
-    dataResult = dataResult.slice(0, page * 4);
-    res.send(getUserInfo(dataResult, req));
-});
+
 //get nodeList detail
 route.get('/info', function (req, res) {
     let {nodeId} = req.query;
