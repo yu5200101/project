@@ -7,6 +7,7 @@ import {NavLink} from 'react-router-dom'
 import {queryBanner} from '../../api/nodeList';
 import {connect} from 'react-redux';
 import action from '../../store/action/index';
+import LoadMore from '../../components/LoadMore';
 
 class Follow extends React.Component {
 
@@ -73,6 +74,7 @@ class Follow extends React.Component {
                         </div>
                     })
                 }
+                <LoadMore/>
                 <div className="footer">
                     <Footer/>
                 </div>

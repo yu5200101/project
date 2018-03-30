@@ -1,5 +1,5 @@
 import React from 'react';
-import {withRouter,NavLink} from 'react-router-dom';
+import {NavLink} from 'react-router-dom';
 import './Footer.less';
 import '../common/css/style.css';
 
@@ -13,7 +13,7 @@ export default class Footer extends React.Component {
         return <footer className="footerBox">
                 <ul>
                     <li>
-                        <NavLink exact to="/home">
+                        <NavLink exact to="/">
                             <i className="icon-home3"></i>
                             首页
                         </NavLink>

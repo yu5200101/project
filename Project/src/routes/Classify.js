@@ -1,5 +1,4 @@
 import React from 'react';
-import Follow from "./Follow/Follow";
 import Classed from "./Classed/Classed";
 import Nav from "../components/Nav";
 

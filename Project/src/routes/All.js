@@ -1,6 +1,5 @@
 import React from 'react';
 import './All.less';
-import Nav from "../components/Nav";
 import {connect} from 'react-redux';
 import action from '../store/action/index';
 import {querySearch} from '../api/nodeList';

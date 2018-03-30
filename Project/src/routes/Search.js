@@ -27,7 +27,6 @@ class Search extends React.Component {
     render() {
         let {hotKey} = this.props,
             {keyList} = this.state;
-        let A = "/home" ? "/home" : "/search";
         return (
             <div className="search">
                 <Nav/>

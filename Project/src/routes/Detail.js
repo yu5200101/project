@@ -2,7 +2,7 @@ import React from 'react';
 import "./Detail.less";
 import {connect} from 'react-redux';
 import action from '../store/action/index';
-import {queryNodeListInfo, queryComment, isFollow, isCollect, isLike} from '../api/nodeList';
+import {queryNodeListInfo, queryComment} from '../api/nodeList';
 import {queryUserInfo} from '../api/profile';
 import {withRouter} from 'react-router-dom';
 import Node from './Detail/Node';
@@ -19,16 +19,13 @@ class Detail extends React.Component {
                 page: 1
             },
             follow: {
-                id: 0,
-                fId: 0
+                id: 1,
+                fId: 2
             },
             icons: {
-                id: 0,
-                nodeId: 1,
+                id: 1,
+                nodeId: 2,
             },
-            isLike: false,
-            isCollect: false,
-            isFollow: false,
             Id: JSON.parse(localStorage.getItem('userId'))[0],
         }
     }
@@ -36,6 +33,11 @@ class Detail extends React.Component {
     async componentDidMount() {
         let {Id} = this.state;
         let {match: {params: {nodeId}}} = this.props;
+        let icons= {
+            id: Id,
+            nodeId
+        };
+        this.setState({icons});
         let result = await queryNodeListInfo(nodeId);
         this.setState({
             nodeData: result
@@ -46,11 +48,6 @@ class Detail extends React.Component {
             };
             this.setState({
                 follow: data
-            }, async function () {
-                let result = await isFollow(this.state.follow);
-                this.setState({
-                    isFollow: result
-                });
             });
         });
         let data = {
@@ -68,29 +65,13 @@ class Detail extends React.Component {
         let userInfo = await queryUserInfo(Id);
         this.setState({userInfo});
 
-        let icons= {
-            nodeId,
-            id: Id,
-        };
-        this.setState({
-            icons,
-        }, async function () {
-            let resultLike = await isLike(this.state.icons);
-            this.setState({
-                isLike: resultLike
-            });
-            isCollect(this.state.icons).then(result=>{
-                this.setState({
-                    isCollect: result
-                });
-            });
-        });
+
     }
 
     render() {
-        let {nodeData, commentData, isFollow, userInfo, isCollect, isLike} = this.state;
-        return <Node nodeData={nodeData} commentData={commentData} isFollow={isFollow} userInfo={userInfo}
-                     isCollect={isCollect} isLike={isLike}/>
+        let {nodeData, commentData, follow, userInfo,icons} = this.state;
+        return <Node nodeData={nodeData} commentData={commentData} follow={follow} userInfo={userInfo}
+                     icons={icons} />
     }
 }
 

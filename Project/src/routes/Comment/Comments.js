@@ -9,12 +9,8 @@ class Comments extends React.Component {
     static propTypes = {
         commentData:PropTypes.array.isRequired,
     };
-    constructor(props) {
-        super(props);
-    }
 
 
-    // 把参数绑定到  构造函数的state里面
 
     render() {
         let{commentData} = this.props;
@@ -24,7 +20,7 @@ class Comments extends React.Component {
                 <header>
                     <img src={require("../../common/images/fanhui.png")} onClick={ev => {
                         this.props.history.go(-1);
-                    }}/>
+                    }} alt="返回"/>
                     <span>1360条评论</span>
                 </header>
                 <div className="commentContent">

@@ -11,37 +11,31 @@ class Node extends React.Component {
 
     static propTypes = {
         nodeData: PropTypes.object.isRequired,
+        follow: PropTypes.object.isRequired,
+        icons: PropTypes.object.isRequired,
         commentData: PropTypes.array.isRequired,
-        isFollow: PropTypes.bool.isRequired,
-        isCollect: PropTypes.bool.isRequired,
-        isLike: PropTypes.bool.isRequired,
         userInfo: PropTypes.object.isRequired
-
     };
 
     constructor(props) {
         super(props);
         this.state = {
-            idParam: {
-                id: 0,
-                nodeId: 0
-            },
-            follow: {
-                id: 0,
-                fId: 0
-            },
             Id: JSON.parse(localStorage.getItem('userId'))[0],
-            comment: '',
+            commentText: '',
             commentParam: {
                 id: 0,
                 nodeId: 0,
                 text: '',
                 time: '',
             },
-            isFollow:false,
-            isLike:false,
-            isCollect:false
         }
+    }
+
+    componentDidMount() {
+        let {getIsFollow, follow, icons, getIsLike, getIsCollect} = this.props;
+        getIsFollow(follow);
+        getIsLike(icons);
+        getIsCollect(icons);
     }
 
     render() {
@@ -56,9 +50,8 @@ class Node extends React.Component {
                 content = '樱花盛开的 纷飞的三月,没有空去京都看樱花 那就去武汉吧,事前做了攻略 说东湖的樱花更好看 可是东湖离住的地方有点远就罢了 便去了武大,樱花大道果然名不虚传 像走在动漫里一样 就是人超级超级多 拍照还是得早点去,我去的时候是阴天 光线不太好所以照片也不是很理想 但是可以留住这一刻就觉得超级满足了,和喜欢的人走在樱花大道上 真是一件浪漫的事啊,春天的风温柔地吹落樱花瓣 哗啦啦漫天的粉红色,是人间的三月天',
                 likes = [],
                 collect = [],
+                comment=[],
                 time = utils.formatTime(new Date()),
-                type = 'audioVideo',
-                recommend = true,
             },
             commentData,
             isFollow,
@@ -66,7 +59,7 @@ class Node extends React.Component {
             isCollect,
             userInfo
         } = this.props;
-        let {Id, comment} = this.state;
+        let {Id, commentText} = this.state;
         return <div className="det">
             <div className="header">
                 <img onClick={ev => {
@@ -101,12 +94,12 @@ class Node extends React.Component {
                     this.props.history.push(`/comment/${nodeId}`)
                 }}>
                     <span>笔记评论</span>
-                    <span>共{commentData.length}条评论</span>
+                    <span>共{comment.length}条评论</span>
                     <i>&gt;</i>
                 </div>
                 <div className="addComment">
                     <img src={userInfo['userImg']} alt=""/>
-                    <input type="text" placeholder="想勾搭，先评论" onChange={this.handInp} value={comment}/>
+                    <input type="text" placeholder="想勾搭，先评论" onChange={this.handInp} value={commentText}/>
                     <button onClick={this.handComment} data-nodeid={nodeId}>发送</button>
                 </div>
                 {
@@ -136,11 +129,11 @@ class Node extends React.Component {
             </div>
 
             <ul className="footer">
-                {!isLike ? <li onClick={this.likeClick} data-nodeid={nodeId}>
+                {!isLike ? <li onClick={this.likeClick}>
                     <i className="icon-heart"></i>
                     <span>赞</span>
                     <span>{likes.length}</span>
-                </li> : <li data-nodeid={nodeId}>
+                </li> : <li>
                     <i className="icon-heart active"></i>
                     <span>赞</span>
                     <span>{likes.length}</span>
@@ -149,13 +142,13 @@ class Node extends React.Component {
                 <li>
                     <i className="icon-chat-bubble-dots"></i>
                     <span>评论</span>
-                    <span>{commentData.length}</span>
+                    <span>{comment.length}</span>
                 </li>
-                {!isCollect ? <li onClick={this.collectClick} data-nodeid={nodeId}>
+                {!isCollect ? <li onClick={this.collectClick}>
                     <i className="icon-star-full"></i>
                     <span>收藏</span>
                     <span>{collect.length}</span>
-                </li> : <li data-nodeid={nodeId}>
+                </li> : <li>
                     <i className="icon-star-full active"></i>
                     <span>收藏</span>
                     <span>{collect.length}</span>
@@ -165,66 +158,28 @@ class Node extends React.Component {
         </div>
     }
 
+
     handInp = (ev) => {
         this.setState({
-            comment: ev.target.value
+            commentText: ev.target.value
         });
     };
-    follow = (ev) => {
-        let {Id} = this.state;
-        let data = {
-            id: Id,
-            fId: ev.target.dataset.fid
-        };
-        this.setState({
-            follow: data
-        }, async function () {
-            let result = await addFollow(this.state.follow);
-            console.log(result);
-        });
-        this.setState({
-            isFollow:true
-        });
+    follow = () => {
+        addFollow(this.props.follow);
     };
-    likeClick = (ev) => {
-        let {Id} = this.state;
-        let data = {
-            id: Id,
-            nodeId: ev.target.dataset.nodeid
-        };
-        this.setState({
-            idParam: data
-        }, async function () {
-            let result = await addLike(this.state.idParam);
-            console.log(result);
-        });
-        this.setState({
-            isLike:true
-        });
+    likeClick = () => {
+        addLike(this.props.icons);
     };
     collectClick = (ev) => {
-        let {Id} = this.state;
-        let data = {
-            id: Id,
-            nodeId: ev.target.dataset.nodeid
-        };
-        this.setState({
-            idParam: data
-        }, async function () {
-            let result = await addCollect(this.state.idParam);
-            console.log(result);
-        });
-        this.setState({
-            isCollect:true
-        });
+        addCollect(this.props.icons);
     };
     handComment = (ev) => {
-        let {comment, Id} = this.state;
+        let {commentText, Id} = this.state;
         let nodeId = ev.target.dataset.nodeid;
         let data = {
             id: Id,
             nodeId,
-            text: comment,
+            text: commentText,
             time: utils.formatTime(new Date(), '{0}-{1}-{2}'),
         };
         this.setState({

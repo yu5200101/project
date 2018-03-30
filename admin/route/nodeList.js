@@ -49,9 +49,9 @@ route.post('/recommend', function (req, res) {
         rec = Boolean(req.body.recommend),
         data = req.nodeList.data;
     let dataResult = data.filter((item) => item.recommend === rec);
-    dataResult.forEach((item)=>{
-        req.commentList.forEach((temp)=>{
-            if(item['nodeId']===temp['nodeId']){
+    dataResult.forEach((item) => {
+        req.commentList.forEach((temp) => {
+            if (item['nodeId'] === temp['nodeId']) {
                 item['comment'] = temp['textList'];
             }
         });
@@ -65,7 +65,7 @@ route.post('/class', function (req, res) {
         page = req.body.page || 1,
         data = req.nodeList.data;
     let dataResult = data.filter(item => item.type === type);
-    dataResult = dataResult.slice((page - 1) * 4, page * 4);
+    dataResult = dataResult.slice(0, page * 4);
     res.send(getUserInfo(dataResult, req));
 });
 // add node
@@ -92,14 +92,14 @@ route.post('/collectAndNode', function (req, res) {
         type = req.body.type,
         data = req.nodeList.data;
     let dataResult = [];
-    if(type === 'collect'){
+    if (type === 'collect') {
         let curCollect = req.collectList.find(item => item['id'] === Number(id))['collectList'] || [];
         curCollect.forEach((val) => {
             let newNode = data.find(item => item['nodeId'] === val);
             dataResult.push(newNode);
         });
-    }else if(type === 'node'){
-         dataResult = data.filter(item => item['id'] === Number(id))||[];
+    } else if (type === 'node') {
+        dataResult = data.filter(item => item['id'] === Number(id)) || [];
     }
     dataResult = dataResult.slice(0, page * 4);
     res.send(getUserInfo(dataResult, req));
@@ -110,6 +110,11 @@ route.get('/info', function (req, res) {
     let {nodeId} = req.query;
     let dataResult = req.nodeList['data'].find(item => item['nodeId'] === Number(nodeId)) || {};
     let curUser = req.userList['data'].find(temp => temp['id'] === Number(dataResult['id']));
+    req.commentList.forEach((item) => {
+        if (dataResult['nodeId'] === item['nodeId']) {
+            dataResult['comment'] = item['textList'];
+        }
+    });
     dataResult['userName'] = curUser['userName'];
     dataResult['userImg'] = curUser['userImg'];
     res.send(dataResult);
@@ -128,8 +133,8 @@ route.post('/comment', function (req, res) {
         page = req.body.page || 1,
         commentData = req.commentList;
     let newComment = commentData.find(item => item['nodeId'] === Number(nodeId))['textList'];
-    newComment.sort(function (a,b) {
-        return new Date(b.time)-new Date(a.time);
+    newComment.sort(function (a, b) {
+        return new Date(b.time) - new Date(a.time);
     });
     newComment = newComment.slice(0, page * 4);
     res.send(getUserInfo(newComment, req));
