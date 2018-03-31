@@ -36,12 +36,12 @@ class Classed extends React.Component {
             <div className="nav">
                 <ul onClick={this.handClick}>
                     <li type="food" className="active">美食</li>
-                    <li type="fashion" className="active">时尚</li>
-                    <li type="beauty" className="active">美妆</li>
-                    <li type="exercise" className="active">运动</li>
-                    <li type="audioVideo" className="active">影音</li>
-                    <li type="travel" className="active">旅行</li>
-                    <li type="home" className="active">居家</li>
+                    <li type="fashion">时尚</li>
+                    <li type="beauty">美妆</li>
+                    <li type="exercise">运动</li>
+                    <li type="audioVideo">影音</li>
+                    <li type="travel">旅行</li>
+                    <li type="home">居家</li>
                 </ul>
             </div>
             <div className="container">
