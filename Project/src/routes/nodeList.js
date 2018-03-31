@@ -27,14 +27,8 @@ export function queryComment(item) {
 export function addLike(item) {
     return axios.post('/nodeList/like',item);
 }
-export function isLike(item) {
-    return axios.post('/nodeList/isLike',item);
-}
 export function addCollect(item) {
     return axios.post('/nodeList/addCollect',item);
-}
-export function isCollect(item) {
-    return axios.post('/nodeList/isCollect',item);
 }
 export function addComment(item) {
     return axios.post('/nodeList/addComment',item);
@@ -45,6 +39,7 @@ export function addFollow(item) {
 export function isFollow(item) {
     return axios.post('/profile/isFollow',item);
 }
+
 export function postEmit(item) {
     return axios.post('/nodeList/addNode',item)
 }

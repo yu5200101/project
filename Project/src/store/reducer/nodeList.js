@@ -7,6 +7,8 @@ const nodeListReducer = (state = {
     isFollow: false,
     isLike: false,
     isCollect: false,
+    commentData:[],
+    searchData:[]
 }, action) => {
     state = {...state};
     switch (action.type) {
@@ -27,6 +29,12 @@ const nodeListReducer = (state = {
             break;
         case Types.IS_COLLECT:
             state.isCollect = action.payload;
+            break;
+        case Types.GET_COMMENT:
+            state.commentData = action.payload;
+            break;
+        case Types.GET_SEARCH:
+            state.searchData = action.payload;
             break;
     }
     return state;

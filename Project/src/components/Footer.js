@@ -13,7 +13,7 @@ export default class Footer extends React.Component {
         return <footer className="footerBox">
                 <ul>
                     <li>
-                        <NavLink exact to="/">
+                        <NavLink exact to="/home">
                             <i className="icon-home3"></i>
                             首页
                         </NavLink>

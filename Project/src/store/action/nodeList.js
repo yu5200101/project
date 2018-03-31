@@ -1,5 +1,5 @@
 import * as Types from '../action-types'
-import {queryHotKey,queryRecommend,queryNodeListClass,isFollow,isLike,isCollect} from '../../api/nodeList'
+import {queryHotKey,queryRecommend,queryNodeListClass,isFollow,isLike,isCollect,queryComment,querySearch} from '../../api/nodeList'
 
 const nodeListAction = {
 
@@ -7,6 +7,12 @@ const nodeListAction = {
         return {
             type: Types.RECOMMEND,
             payload: await queryRecommend(item)
+        }
+    },
+    async getComment(item) {
+        return {
+            type: Types.GET_COMMENT,
+            payload: await queryComment(item)
         }
     },
     async getHotKey(){
@@ -37,6 +43,12 @@ const nodeListAction = {
         return {
             type: Types.IS_COLLECT,
             payload: await isCollect(item)
+        }
+    },
+    async getSearch(item) {
+        return {
+            type: Types.GET_SEARCH,
+            payload: await querySearch(item)
         }
     }
 };

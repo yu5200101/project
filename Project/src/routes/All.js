@@ -2,13 +2,12 @@ import React from 'react';
 import './All.less';
 import {connect} from 'react-redux';
 import action from '../store/action/index';
-import {querySearch} from '../api/nodeList';
+import LoadSearch from '../components/LoadSearch';
 
 class All extends React.Component {
     constructor() {
         super();
         this.state = {
-            searchData: [],
             param: {
                 key: '',
                 page: 1
@@ -25,16 +24,14 @@ class All extends React.Component {
             };
         this.setState({
             param: data
-        }, async function () {
-            let result = await querySearch(this.state.param);
-            this.setState({
-                searchData: result
-            });
+        }, function () {
+            this.props.getSearch(this.state.param)
         });
     }
 
     render() {
-        let {searchData} = this.state;
+        let {param:{key}}=this.state;
+        let {searchData} = this.props;
         return (
             <div className="all">
                 <header className="head">
@@ -49,7 +46,7 @@ class All extends React.Component {
                 </div>
                 <div className="container">
                     <ul>
-                        {
+                        {searchData && searchData.length > 0 ?
                             searchData.map((item, index) => (
                                 <li key={index}>
                                     <img src={item['nodeImg']} alt=""/>
@@ -63,9 +60,12 @@ class All extends React.Component {
                                         </div>
                                     </div>
                                 </li>
-                            ))
+                            )) : ''
                         }
                     </ul>
+                </div>
+                <div>
+                    <LoadSearch keys={key}/>
                 </div>
             </div>
         )

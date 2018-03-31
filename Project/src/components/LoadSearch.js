@@ -5,16 +5,18 @@ import {withRouter} from 'react-router-dom';
 import './LoadMore.less';
 import action from '../store/action/index';
 
-class LoadClass extends React.Component {
+class LoadSearch extends React.Component {
+
     static propTypes = {
-        type: PropTypes.string.isRequired
+        keys: PropTypes.string.isRequired
     };
+
     constructor(props) {
         super(props);
         this.state = {
             step: 1,
             param: {
-                type: 'food',
+                key: '',
                 page: 1
             }
         }
@@ -30,20 +32,20 @@ class LoadClass extends React.Component {
 
     loadMore = () => {
         let {step} = this.state;
-        let {type} = this.props;
+        let {keys} = this.props;
         this.setState({
-            step:++step
+            step: ++step
         });
-        let data={
-            type,
+        let data = {
+            key:keys,
             page: step
         };
         this.setState({
-            param:data
-        },function () {
-            this.props.getClassNode(this.state.param);
+            param: data
+        }, function () {
+            this.props.getSearch(this.state.param);
         });
     }
 }
 
-export default withRouter(connect(state=>({...state.nodeList}),action.nodeList)(LoadClass));
+export default withRouter(connect(state => ({...state.nodeList}), action.nodeList)(LoadSearch));

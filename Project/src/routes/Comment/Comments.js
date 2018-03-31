@@ -4,24 +4,35 @@ import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import action from "../../store/action";
 import {withRouter} from 'react-router-dom';
+import LoadComment from '../../components/LoadComment'
 
 class Comments extends React.Component {
+
     static propTypes = {
-        commentData:PropTypes.array.isRequired,
+        param: PropTypes.object.isRequired
     };
 
+    constructor(){
+        super();
+    }
+
+    componentDidMount() {
+        let {commentData, getComment,param} = this.props;
+        if (commentData && commentData.length === 0) {
+            getComment(param);
+        }
+    }
 
 
     render() {
-        let{commentData} = this.props;
-
+        let{commentData,param:{nodeId}} = this.props;
         return (
             <div className="allComment">
                 <header>
                     <img src={require("../../common/images/fanhui.png")} onClick={ev => {
                         this.props.history.go(-1);
                     }} alt="返回"/>
-                    <span>1360条评论</span>
+                    <span>{commentData.length}条评论</span>
                 </header>
                 <div className="commentContent">
                     {
@@ -48,6 +59,7 @@ class Comments extends React.Component {
                             </div>
                         )):''
                     }
+                    <LoadComment nodeId={Number(nodeId)}/>
                 </div>
             </div>
         )

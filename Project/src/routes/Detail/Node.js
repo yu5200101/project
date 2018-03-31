@@ -13,7 +13,7 @@ class Node extends React.Component {
         nodeData: PropTypes.object.isRequired,
         follow: PropTypes.object.isRequired,
         icons: PropTypes.object.isRequired,
-        commentData: PropTypes.array.isRequired,
+        commentDatas: PropTypes.array.isRequired,
         userInfo: PropTypes.object.isRequired
     };
 
@@ -53,7 +53,7 @@ class Node extends React.Component {
                 comment=[],
                 time = utils.formatTime(new Date()),
             },
-            commentData,
+            commentDatas,
             isFollow,
             isLike,
             isCollect,
@@ -103,7 +103,8 @@ class Node extends React.Component {
                     <button onClick={this.handComment} data-nodeid={nodeId}>发送</button>
                 </div>
                 {
-                    commentData.map((item, index) => (
+                    commentDatas && commentDatas.length>0 ?
+                    commentDatas.map((item, index) => (
                         <div className="content" key={index}>
                             <div className="photo">
                                 <img src={item['userImg']} alt=""/>
@@ -123,7 +124,7 @@ class Node extends React.Component {
                                 </div>
                             </div>
                         </div>
-                    ))
+                    )):''
                 }
 
             </div>

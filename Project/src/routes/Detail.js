@@ -3,7 +3,7 @@ import "./Detail.less";
 import {connect} from 'react-redux';
 import action from '../store/action/index';
 import {queryNodeListInfo, queryComment} from '../api/nodeList';
-import {queryUserInfo} from '../api/profile';
+import {getProfileInfo} from '../api/profile';
 import {withRouter} from 'react-router-dom';
 import Node from './Detail/Node';
 
@@ -12,7 +12,7 @@ class Detail extends React.Component {
         super();
         this.state = {
             nodeData: {},
-            commentData: [],
+            commentDatas: [],
             userInfo: {},
             param: {
                 nodeId: 1,
@@ -26,7 +26,7 @@ class Detail extends React.Component {
                 id: 1,
                 nodeId: 2,
             },
-            Id: JSON.parse(localStorage.getItem('userId'))[0],
+            Id: JSON.parse(localStorage.getItem('userId')),
         }
     }
 
@@ -59,18 +59,18 @@ class Detail extends React.Component {
         }, async function () {
             let commentResult = await queryComment(this.state.param);
             this.setState({
-                commentData: commentResult
+                commentDatas: commentResult
             });
         });
-        let userInfo = await queryUserInfo(Id);
+        let userInfo = await getProfileInfo(Id);
         this.setState({userInfo});
 
 
     }
 
     render() {
-        let {nodeData, commentData, follow, userInfo,icons} = this.state;
-        return <Node nodeData={nodeData} commentData={commentData} follow={follow} userInfo={userInfo}
+        let {nodeData, commentDatas, follow, userInfo,icons} = this.state;
+        return <Node nodeData={nodeData} commentDatas={commentDatas} follow={follow} userInfo={userInfo}
                      icons={icons} />
     }
 }

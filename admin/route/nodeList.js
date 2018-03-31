@@ -1,3 +1,4 @@
+
 let express = require('express'),
     route = express.Router(),
     utils = require('./utils');
@@ -44,7 +45,6 @@ function isExit(data, id) {
 //recommend
 route.post('/recommend', function (req, res) {
     //=>req.body
-    // req.body = req.body.item;
     let page = req.body.page || 1,
         rec = Boolean(req.body.recommend),
         data = req.nodeList.data;
@@ -102,7 +102,7 @@ route.post('/collectAndNode', function (req, res) {
         dataResult = data.filter(item => item['id'] === Number(id)) || [];
     }
     dataResult = dataResult.slice(0, page * 4);
-    res.send(getUserInfo(dataResult, req));
+    dataResult ? res.send(getUserInfo(dataResult, req)) : res.send(JSON.stringify([]));
 });
 
 //get nodeList detail
