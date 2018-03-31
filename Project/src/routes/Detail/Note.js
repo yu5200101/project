@@ -1,6 +1,3 @@
-/**
- * Created by 秦梦超 on 2018/3/29.
- */
 import React,{Component} from 'react'
 import {connect} from 'react-redux'
 import action from '../../store/action/index'

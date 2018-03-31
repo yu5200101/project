@@ -23,7 +23,7 @@ class Node extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            Id: JSON.parse(localStorage.getItem('userId'))[0],
+            Id: JSON.parse(localStorage.getItem('userId')),
             commentText: '',
             commentParam: {
                 id: 0,

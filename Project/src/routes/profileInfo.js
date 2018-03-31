@@ -40,27 +40,12 @@ class ProfileInfo extends Component {
     }
 
     render() {
-        let {data,name, birth, sex, bio, tel} = this.state;
+        let {data, name, birth, sex, bio, tel} = this.state;
         return (<div>
             <div className="Q-proInfo">
                 <header className="Q-heading">
             <span onClick={(ev) => {
-                let {id,name, birth, sex, bio, tel} = this.state;
-                console.log(name);
-                let data = {
-                    id,
-                    userName:name,
-                    birth,
-                    sex,
-                    bio,
-                    tel,
-                };
-                this.setState({param:data},function () {
-                    editUserInfo(this.state.param);
-                });
-                setTimeout(()=>{
-                    this.props.history.push('/profile');
-                },500);
+                this.props.history.go(-1);
             }}>&lt;</span>
                     <h3>个人资料</h3>
                 </header>
@@ -90,7 +75,7 @@ class ProfileInfo extends Component {
                     </li>
                     <li>
                         <p>性别</p>
-                        <input type="text" placeholder="女" onChange={this.handSex} value={sex}/>
+                        <input type="text" placeholder="女" onChange={this.handSex} value={sex ? '男' : '女'}/>
                         <span>&gt;</span>
                     </li>
                     <li>
@@ -118,10 +103,28 @@ class ProfileInfo extends Component {
                 <div className="L-nav">
                     <span>更多信息（仅自己可见，用于优化你的推荐结果）</span>
                 </div>
+                <div className="nav" onClick={this.confirm}>确认</div>
             </div>
         </div>)
     }
 
+    confirm = (ev) => {
+        let {id, name, birth, sex, bio, tel} = this.state;
+        let data = {
+            id,
+            userName: name,
+            birth,
+            sex: sex === '男' ? 1 : 0,
+            bio,
+            tel,
+        };
+        this.setState({param: data}, function () {
+            editUserInfo(this.state.param);
+        });
+        setTimeout(() => {
+            this.props.history.push('/profile');
+        }, 500);
+    };
     handName = (ev) => {
         this.setState({
             name: ev.target.value

@@ -86,6 +86,12 @@ route.post('/addNode', function (req, res) {
         nodeId: ++req.nodeList.num
     };
     data.push(newData);
+    let obj={
+        nodeId:req.nodeList.num,
+        textList:[]
+    };
+    req.commentList.push(obj);
+    utils.writeFile('commentList.json', req.commentList);
     utils.writeFile('nodeList.json', req.nodeList);
     res.send('success');
 });
@@ -206,7 +212,6 @@ route.post('/search', function (req, res) {
     let key = req.body.key,
         page = req.body.page || 1;
     let dataResult = req.nodeList['data'].filter(item => {
-        console.log(item['title'].indexOf(key));
         return item['title'].indexOf(key) !== -1;
     });
     dataResult.sort(function (a, b) {
