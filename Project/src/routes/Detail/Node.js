@@ -87,7 +87,9 @@ class Node extends React.Component {
             </div>
             <div className="otherComment">
                 <div className="comment" onClick={ev => {
-                    this.props.history.push(`/comment/${nodeId}`)
+                    setTimeout(()=>{
+                        this.props.history.push(`/comment/${nodeId}`)
+                    },500);
                 }}>
                     <span>笔记评论</span>
                     <span>共{comment.length}条评论</span>
