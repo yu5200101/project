@@ -1,4 +1,4 @@
-import React,{Component} from 'react'
+import React, {Component} from 'react'
 
 import {connect} from 'react-redux'
 
@@ -6,120 +6,147 @@ import action from '../store/action/index'
 
 import './profileInfo.less'
 
-import {getProfileInfo} from '../api/profile'
+import {getProfileInfo, editUserInfo} from '../api/profile'
 
- class ProfileInfo extends Component{
+class ProfileInfo extends Component {
 
-    constructor(){
+    constructor() {
         super();
-        this.state={
-            data:{}
+        this.state = {
+            id: localStorage.getItem('userId'),
+            data: {},
+            param: {
+                id: localStorage.getItem('userId'),
+                userName: '',
+                birth: '',
+                sex: 0,
+                bio: '',
+                tel: ''
+            },
+            tel: '',
+            name: '',
+            birth: '',
+            sex: 0,
+            bio: ''
         }
     }
 
-    async componentWillMount(){
-
-        let id=window.localStorage.getItem('userId');
-        let result=await getProfileInfo(id);
+    async componentWillMount() {
+        let {id} = this.state;
+        let result = await getProfileInfo(id);
         this.setState({
-            data:result
+            data: result
         });
-        console.log(this.props);
     }
 
-    render(){
-        let {data}=this.state;
-        return(<div className="Q-proInfo">
-            <header className="Q-heading">
-                   <span onClick={()=>{
-                       this.props.history.goBack(-1)
-                   }}>&lt;</span>
-                    个人资料
-               </header>
-            <section className="Q-main">
-                <h2>个人资料</h2>
+    render() {
+        let {data,name, birth, sex, bio, tel} = this.state;
+        return (<div>
+            <div className="Q-proInfo">
+                <header className="Q-heading">
+            <span onClick={(ev) => {
+                let {id,name, birth, sex, bio, tel} = this.state;
+                console.log(name);
+                let data = {
+                    id,
+                    userName:name,
+                    birth,
+                    sex,
+                    bio,
+                    tel,
+                };
+                this.setState({param:data},function () {
+                    editUserInfo(this.state.param);
+                });
+                setTimeout(()=>{
+                    this.props.history.push('/profile');
+                },500);
+            }}>&lt;</span>
+                    <h3>个人资料</h3>
+                </header>
+            </div>
+            <div className="L-nav">
+                <span>个人资料</span>
+            </div>
+            <div className="L-con">
                 <ul>
-                    <li className="Q-infoOther">
-                        <div className="Q-infoLeft">
-                            <p>修改名字</p>
-                            <p>{data.userName} </p>
-                        </div>
-                        <span className="iconfont icon-go"></span>
+                    <li>
+                        <p>修改名字</p>
+                        <input type="text" placeholder={data['userName']}
+                               onChange={this.handName} value={name}/>
+                        <span>&gt;</span>
                     </li>
-                    <li className="Q-infoOther">
-                        <div className="Q-infoLeft">
-                            <p>小红书ID</p>
-                            <p>{data.id} </p>
+                    <li>
+                        <p>宝书ID</p>
+                        <div className="input">
+                            <span>{data.id}</span>
                         </div>
-                        <span className="iconfont icon-go"></span>
+                        <span>&gt;</span>
                     </li>
-                    <li className="Q-infoOther">
-                        <div className="Q-infoLeft">
-                            <p>实名认证</p>
-                            <p style={{
-                                fontSize: ".3rem",
-                                color: "#d2d2d2"
-                            }}>未认证,认证信息尽自己可见 </p>
-                        </div>
-                        <span className="iconfont icon-go"></span>
+                    <li>
+                        <p>电话号码</p>
+                        <input type="text" placeholder={data['tel']} onChange={this.handTel} value={tel}/>
+                        <span>&gt;</span>
                     </li>
-                    <li className="Q-infoOther">
-                        <div className="Q-infoLeft">
-                            <p>性别</p>
-                            <p>{data.sex == 0 ? "女" : "男"} </p>
-                        </div>
-                        <span className="iconfont icon-go"></span>
+                    <li>
+                        <p>性别</p>
+                        <input type="text" placeholder="女" onChange={this.handSex} value={sex}/>
+                        <span>&gt;</span>
                     </li>
-                    <li className="Q-infoOther">
-                        <div className="Q-infoLeft">
-                            <p>常驻地</p>
-                            <p>完善你的信息 </p>
-                        </div>
-                        <span className="iconfont icon-go"></span>
+                    <li>
+                        <p>生日</p>
+                        <input type="text" placeholder={data['birth']}
+                               onChange={this.handBirth} value={birth}/>
+                        <span>&gt;</span>
                     </li>
-                    <li className="Q-infoOther">
-                        <div className="Q-infoLeft">
-                            <p>生日</p>
-                            <p>{data.birth}</p>
-                        </div>
-                        <span className="iconfont icon-go"></span>
-                    </li>
-                    <li className="Q-infoOther">
-                        <div className="Q-infoLeft">
-                            <p>个性签名</p>
-                            <p>未填写 </p>
-                        </div>
-                        <span className="iconfont icon-go"></span>
-                    </li>
-                    <li style={{
-                        height: ".7rem",
-                        lineHeight: ".7rem",
-                        fontSize: ".28rem",
-                        background: "#f6f8fa",
-                        paddingLeft: ".3rem",
-                        color: "#9f9f9f",
-                        letterSpacing: ".1rem",
-                        borderBottom: ".01rem solid #e9e9ea"
-                    }}>
-                        红薯等级
-                    </li>
-                    <li className="Q-infoOther">
-                        <div className="Q-infoLeft">
-                            <p style={{
-                                color: "#222222"
-                            }}>薯北鼻</p>
-                            <p></p>
-                        </div>
-                        <span className="iconfont icon-go"></span>
+                    <li>
+                        <p>个性签名</p>
+                        <input type="text" placeholder={data['bio']}
+                               onChange={this.handBio} value={bio}/>
+                        <span>&gt;</span>
                     </li>
                 </ul>
-            </section>
-            <footer className="Q-footer">
-                <h2>更多信息(仅自己可见,用于优化后的结果)</h2>
-            </footer>
+                <div className="L-nav">
+                    <span>红薯等级</span>
+                </div>
+                <ul>
+                    <li>
+                        <p>薯北鼻</p>
+                        <span>&gt;</span>
+                    </li>
+                </ul>
+                <div className="L-nav">
+                    <span>更多信息（仅自己可见，用于优化你的推荐结果）</span>
+                </div>
+            </div>
         </div>)
     }
 
+    handName = (ev) => {
+        this.setState({
+            name: ev.target.value
+        });
+    };
+    handBio = (ev) => {
+        this.setState({
+            bio: ev.target.value
+        });
+    };
+    handBirth = (ev) => {
+        this.setState({
+            birth: ev.target.value
+        });
+    };
+    handSex = (ev) => {
+        this.setState({
+            sex: ev.target.value
+        });
+    };
+    handTel = (ev) => {
+        this.setState({
+            tel: ev.target.value
+        });
+    };
 }
 
-export default connect(state=>({...state.profile}),action.profile)(ProfileInfo)
+export default connect(state => ({...state.profile}), action.profile)(ProfileInfo)

@@ -57,15 +57,15 @@ class Follow extends React.Component {
                             </span>
                                     <ul>
                                         <li>
-                                            <img src={require('../../common/images/shoucang.png')} alt=""/>
+                                            <i className="icon-heart"></i>
                                             <h3>{item.likes.length}</h3>
                                         </li>
                                         <li>
-                                            <img src={require('../../common/images/xiaoxi.png')} alt=""/>
+                                            <i className="icon-chat-bubble-dots"></i>
                                             <h3>{item.comment.length}</h3>
                                         </li>
                                         <li>
-                                            <img src={require('../../common/images/xingxing.png')} alt=""/>
+                                            <i className="icon-star-full"></i>
                                             <h3>{item.collect.length}</h3>
                                         </li>
                                     </ul>

@@ -4,9 +4,6 @@ const nodeListReducer = (state = {
     recommendData: [],
     hotKey: [],
     classData: [],
-    isFollow: false,
-    isLike: false,
-    isCollect: false,
     commentData:[],
     searchData:[]
 }, action) => {
@@ -20,15 +17,6 @@ const nodeListReducer = (state = {
             break;
         case Types.CLASS_NODE:
             state.classData = action.payload;
-            break;
-        case Types.IS_FOLLOW:
-            state.isFollow = action.payload;
-            break;
-        case Types.IS_LIKE:
-            state.isLike = action.payload;
-            break;
-        case Types.IS_COLLECT:
-            state.isCollect = action.payload;
             break;
         case Types.GET_COMMENT:
             state.commentData = action.payload;

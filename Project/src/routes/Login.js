@@ -15,7 +15,6 @@ class Login extends Component {
 
     render() {
 
-
         let {getProfile} = this.props;
         return <div className="Q-wrapper">
             <header className="Q-heading">

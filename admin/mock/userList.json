@@ -19,13 +19,13 @@
     },
     {
       "id": 2,
-      "tel": "18308978876",
+      "tel": "12345678901",
       "pass": "670b14728ad9902aecba32e22fa4f6bd",
-      "userName": "bjt",
+      "userName": "bjtt",
       "userImg": "https://img.xiaohongshu.com/avatar/5a96b46ad1d3b97ead20f245.jpg@160w_160h_92q_1e_1c_1x.jpg",
-      "birth": "1996-07-24",
-      "sex": 0,
-      "bio": "时间是场不落幕的阴谋你越害怕它就越狡诈",
+      "birth": "1993-10-15",
+      "sex": "1",
+      "bio": "超级帅的男孩子",
       "follow": [
         1,
         5,
@@ -186,13 +186,14 @@
     {
       "id": 11,
       "pass": "e10adc3949ba59abbe56e057f20f883e",
-      "tel": "13322087793",
-      "userName": "ruyuan",
-      "userImg": "http://tvax4.sinaimg.cn/crop.0.2.507.507.180/8e29c1baly8fdx1zfctlhj20e30e8dfw.jpg",
-      "birth": "1997-01-01",
+      "tel": "",
+      "userName": "",
+      "userImg": "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=3875436417,2934656235&fm=27&gp=0.jpg",
+      "birth": "",
       "sex": 0,
       "bio": "",
-      "follow": [],
+      "follow": [
+      ],
       "fens": []
     }
   ]

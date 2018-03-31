@@ -11,10 +11,13 @@ class Node extends React.Component {
 
     static propTypes = {
         nodeData: PropTypes.object.isRequired,
-        follow: PropTypes.object.isRequired,
-        icons: PropTypes.object.isRequired,
         commentDatas: PropTypes.array.isRequired,
-        userInfo: PropTypes.object.isRequired
+        userInfo: PropTypes.object.isRequired,
+        icons:PropTypes.object.isRequired,
+        follow:PropTypes.object.isRequired,
+        isCollect:PropTypes.bool.isRequired,
+        isLike:PropTypes.bool.isRequired,
+        isFollow:PropTypes.bool.isRequired
     };
 
     constructor(props) {
@@ -29,13 +32,6 @@ class Node extends React.Component {
                 time: '',
             },
         }
-    }
-
-    componentDidMount() {
-        let {getIsFollow, follow, icons, getIsLike, getIsCollect} = this.props;
-        getIsFollow(follow);
-        getIsLike(icons);
-        getIsCollect(icons);
     }
 
     render() {
@@ -114,7 +110,7 @@ class Node extends React.Component {
                                 <p>{item['text']}</p>
                                 <i>{item['time']}</i>
                                 <span className="replay">回复</span>
-                                <i className="iconfont icon-xiaolian"></i>
+                                <i className="icon-heart"></i>
                                 <i className="number">88</i>
                                 <div className="comment">
                                     <div>
@@ -136,7 +132,7 @@ class Node extends React.Component {
                     <span>{likes.length}</span>
                 </li> : <li>
                     <i className="icon-heart active"></i>
-                    <span>赞</span>
+                    <span>已赞</span>
                     <span>{likes.length}</span>
                 </li>}
 
@@ -151,7 +147,7 @@ class Node extends React.Component {
                     <span>{collect.length}</span>
                 </li> : <li>
                     <i className="icon-star-full active"></i>
-                    <span>收藏</span>
+                    <span>已收藏</span>
                     <span>{collect.length}</span>
                 </li>}
 

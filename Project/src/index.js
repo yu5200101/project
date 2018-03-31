@@ -19,6 +19,8 @@ import Profile from './routes/Profile';
 import Register from './routes/Register';
 import ProfileInfo from './routes/profileInfo';
 import '../src/common/css/style.css';
+import Setting from "./routes/Mine/Setting/Setting";
+
 
 ReactDom.render(<Provider store={store}>
     <HashRouter>
@@ -36,8 +38,9 @@ ReactDom.render(<Provider store={store}>
             <Route path="/add" component={Add}/>
             <Route path="/profile" component={Profile}/>
             <Route path="/profileInfo" component={ProfileInfo}/>
+            <Route path="/setting" component={Setting}/>
             <Route path="/all/:key?" component={All}/>
-            <Redirect to="/Shouye"/>
+            <Redirect to="/myhome"/>
         </Switch>
     </HashRouter>
 </Provider>,window.root);

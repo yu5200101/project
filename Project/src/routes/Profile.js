@@ -38,10 +38,14 @@ class Profile extends Component {
         return <div className="profile">
             <header className="heading">
                 <div className="proHead">
-                      <span onClick={() => {
-                          this.props.history.push('/register')
-                      }} className="iconfont icon-more"></span>
+                    <i className="icon-menu" onClick={ev=>{
+                        this.props.history.push('setting')
+                    }}></i>
+                    <span onClick={() => {
+                        this.props.history.push('/register')
+                    }} className="iconfont icon-more"></span>
                     <span className="iconfont icon-zhuanfa"></span>
+
                 </div>
                 <div className="proInfo">
                     <div className="proImg">
@@ -84,22 +88,18 @@ class Profile extends Component {
                     <p>添加个人描述，让更多人认识你</p>
                 </div>
                 <ul onClick={async (e) => {
-                    let type = e.target.getAttribute("type");
+                    let tar = e.target;
+                    let type = tar.getAttribute('type');
+                    let childrenList = tar.parentNode.children;
+                    [...childrenList].forEach((item) => {
+                        item.className = '';
+                    });
+                    tar.className = 'active';
                     let {id} = this.state;
-
                     let result = await getMyNote(id, 1, type);
-
-                    console.log(result);
-                    if (type === 'node') {
-                        e.className = 'active'
-                    }
-                    if (type === 'collect') {
-                        e.className = 'active'
-                    }
-
                     this.setState({
                         childData: result,
-                        type: type
+                        type,
                     });
                 }} className="proNote">
                     <li className="active" type="node">

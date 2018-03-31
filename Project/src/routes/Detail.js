@@ -2,7 +2,7 @@ import React from 'react';
 import "./Detail.less";
 import {connect} from 'react-redux';
 import action from '../store/action/index';
-import {queryNodeListInfo, queryComment} from '../api/nodeList';
+import {queryNodeListInfo, queryComment,isFollow,isLike,isCollect} from '../api/nodeList';
 import {getProfileInfo} from '../api/profile';
 import {withRouter} from 'react-router-dom';
 import Node from './Detail/Node';
@@ -26,6 +26,9 @@ class Detail extends React.Component {
                 id: 1,
                 nodeId: 2,
             },
+            isFollow:false,
+            isLike:false,
+            isCollect:false,
             Id: JSON.parse(localStorage.getItem('userId')),
         }
     }
@@ -37,7 +40,16 @@ class Detail extends React.Component {
             id: Id,
             nodeId
         };
-        this.setState({icons});
+        this.setState({icons},async function () {
+            let resultLike = await isLike(this.state.icons);
+            this.setState({
+                isLike: resultLike
+            });
+            let resultCollect = await isCollect(this.state.icons);
+            this.setState({
+                isCollect: resultCollect
+            });
+        });
         let result = await queryNodeListInfo(nodeId);
         this.setState({
             nodeData: result
@@ -48,6 +60,11 @@ class Detail extends React.Component {
             };
             this.setState({
                 follow: data
+            },async function () {
+                let result = await isFollow(this.state.follow);
+                this.setState({
+                    isFollow: result
+                });
             });
         });
         let data = {
@@ -69,9 +86,8 @@ class Detail extends React.Component {
     }
 
     render() {
-        let {nodeData, commentDatas, follow, userInfo,icons} = this.state;
-        return <Node nodeData={nodeData} commentDatas={commentDatas} follow={follow} userInfo={userInfo}
-                     icons={icons} />
+        let {nodeData, commentDatas, isFollow, follow,icons,userInfo,isLike,isCollect} = this.state;
+        return <Node nodeData={nodeData} commentDatas={commentDatas}  userInfo={userInfo} isFollow={isFollow} isLike={isLike} isCollect={isCollect} follow={follow} icons={icons} />
     }
 }
 

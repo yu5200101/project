@@ -6,7 +6,10 @@ route.use(async function (req, res, next) {
     req.userList = await utils.readFile('userList.json');
     next();
 });
-
+route.use(async function (req, res, next) {
+    req.collectList = await utils.readFile('collectList.json');
+    next();
+});
 function isExit(data, id) {
     let isExitCur = data.find(item => item === id);
     !isExitCur ? data.push(id) : null;
@@ -38,7 +41,7 @@ route.post('/register', function (req, res) {
     let result = {};
     req.session.loginId = ++req.userList.num;
     let obj = {
-        id: ++req.userList.num,
+        id: req.userList.num,
         pass: pass,
         tel: tel,
         userName: tel,
@@ -49,6 +52,12 @@ route.post('/register', function (req, res) {
         follow: [],
         fens: []
     };
+    let collectObj={
+        id: req.userList.num,
+        collectList:[]
+    };
+    req.collectList.push(collectObj);
+    utils.writeFile('collectList.json',req.collectList);
     req.userList['data'].push(obj);
     utils.writeFile('userList.json', {
         num: req.userList['num'],

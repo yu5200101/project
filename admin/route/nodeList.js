@@ -1,4 +1,3 @@
-
 let express = require('express'),
     route = express.Router(),
     utils = require('./utils');
@@ -56,6 +55,9 @@ route.post('/recommend', function (req, res) {
             }
         });
     });
+    dataResult.sort(function (a, b) {
+        return new Date(b.time) - new Date(a.time);
+    });
     dataResult = dataResult.slice(0, page * 2);
     res.send(getUserInfo(dataResult, req));
 });
@@ -65,6 +67,9 @@ route.post('/class', function (req, res) {
         page = req.body.page || 1,
         data = req.nodeList.data;
     let dataResult = data.filter(item => item.type === type);
+    dataResult.sort(function (a, b) {
+        return new Date(b.time) - new Date(a.time);
+    });
     dataResult = dataResult.slice(0, page * 4);
     res.send(getUserInfo(dataResult, req));
 });
@@ -101,6 +106,9 @@ route.post('/collectAndNode', function (req, res) {
     } else if (type === 'node') {
         dataResult = data.filter(item => item['id'] === Number(id)) || [];
     }
+    dataResult.sort(function (a, b) {
+        return new Date(b.time) - new Date(a.time);
+    });
     dataResult = dataResult.slice(0, page * 4);
     dataResult ? res.send(getUserInfo(dataResult, req)) : res.send(JSON.stringify([]));
 });
@@ -197,7 +205,13 @@ route.post('/isLike', function (req, res) {
 route.post('/search', function (req, res) {
     let key = req.body.key,
         page = req.body.page || 1;
-    let dataResult = req.nodeList['data'].filter(item => item['title'].indexOf(key.toString()) !== -1);
+    let dataResult = req.nodeList['data'].filter(item => {
+        console.log(item['title'].indexOf(key));
+        return item['title'].indexOf(key) !== -1;
+    });
+    dataResult.sort(function (a, b) {
+        return new Date(b.time) - new Date(a.time);
+    });
     dataResult = dataResult.slice(0, page * 4);
     res.send(getUserInfo(dataResult, req));
 });
