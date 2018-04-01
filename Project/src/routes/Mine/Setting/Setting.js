@@ -18,7 +18,7 @@ export default class Setting extends React.Component{
                 <h3>设置</h3>
               </header>
               <ul>
-                <li onClick={ev=>{this.props.history.push("/issue")}}>
+                <li>
                   <span>个人资料</span>
                   <span>&gt;</span>
                 </li>
@@ -68,7 +68,7 @@ export default class Setting extends React.Component{
                   <span>&gt;</span>
                 </li>
               </ul>
-              <button>退出帐户</button>
+              <button onClick={ev=>{this.props.history.push("/issue")}}>退出帐户</button>
             </div>
         )
     }
